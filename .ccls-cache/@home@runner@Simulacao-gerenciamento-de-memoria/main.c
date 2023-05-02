@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Estrutura para armazenar informações sobre blocos de memória livre
 typedef struct _tipo_MemLivre {
   int End_i;
   int tam;
   struct _tipo_MemLivre *prox;
 } tipo_MemLivre;
 
+// Estrutura para armazenar informações sobre blocos de memória alocados
 typedef struct _tipo_MemAloc {
   int NProcesso;
   int End_i;
@@ -14,18 +16,37 @@ typedef struct _tipo_MemAloc {
   struct _tipo_MemAloc *prox;
 } tipo_MemAloc;
 
+// Função que inicializa a lista de memória livre com o tamanho total da memória
+void inicia(int memoriaTotal);
+
+// Função que insere um bloco de memória alocado na lista de memória alocada
+void InsereBlocoAloc(int Processo, int end_i, int tam);
+
+// Função que insere um bloco de memória livre na lista de memória livre
+void InsereBlocoMemlivre(int end_i, int tam);
+
+// Função que busca um espaço disponível na lista de memória livre com tamanho suficiente para alocação
+int BuscaEspacoDisp(int Tam);
+
+// Função que aloca um bloco de memória para um processo
+void AlocaMemoria(int Processo, int Tam);
+
+// Função que finaliza um processo e libera o espaço de memória ocupado por ele
+void FinalizaProcesso(int n);
+
+// Função que organiza os blocos de memória livre, juntando blocos contíguos
+void OrganizaBlocoMemLivre(void);
+
+// Função que libera a memória das listas de memória alocada e livre
+void LiberaLista(void);
+
+// Função que imprime a situação atual das listas de memória alocada e livre
+void imprimir_situacao_atual();
+
+// Ponteiros para as listas de memória alocada e livre
 tipo_MemLivre *memLivre = NULL;
 tipo_MemAloc *memAloc = NULL;
 
-void inicia(int memoriaTotal);
-void InsereBlocoAloc(int Processo, int end_i, int tam);
-void InsereBlocoMemlivre(int end_i, int tam);
-int BuscaEspacoDisp(int Tam);
-void AlocaMemoria(int Processo, int Tam);
-void FinalizaProcesso(int n);
-void OrganizaBlocoMemLivre(void);
-void LiberaLista(void);
-void imprimir_situacao_atual();
 
 void inicia(int memoriaTotal) {
   memLivre = (tipo_MemLivre *)calloc(1, sizeof(tipo_MemLivre));
